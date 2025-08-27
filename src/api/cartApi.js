@@ -14,31 +14,41 @@ cartApi.interceptors.request.use((config) => {
   if (token) {
     config.headers.Authorization = `Bearer ${token}`;
   }
+  console.log("this is token 1:",config.headers.Authorization);
+  // console.log("this is token 1:",config);
   return config;
 });
 
 export const cartService = {
   // Add item to cart
   addToCart: async (productId, quantity) => {
-    const formData = new FormData();
-    formData.append('productId', productId);
-    formData.append('quantity', quantity);
-    
-    const response = await cartApi.post('/add', formData);
+    const params = new URLSearchParams();
+    params.append('productId', productId);
+    params.append('quantity', quantity);
+    const response = await cartApi.post('/add', params, {
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+      },
+    });
     return response.data;
   },
 
   // Remove item from cart
   removeFromCart: async (productId) => {
+    const params = new URLSearchParams();
+    params.append('productId', productId);
     const response = await cartApi.delete('/remove', {
-      params: { productId }
+      data: params,
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+      },
     });
     return response.data;
   },
 
   // Get cart
   getCart: async () => {
-    const response = await cartApi.get('/');
+    const response = await cartApi.get();
     return response.data;
   },
 };

@@ -66,7 +66,7 @@ export const ProductCard = ({
         <div className="flex items-center justify-between">
           <div className="flex flex-col">
             <span className="text-2xl font-bold text-blue-600">
-              ${product.price.toLocaleString()}
+              Ksh{typeof product.price === 'number' ? product.price.toLocaleString() : 'N/A'}
             </span>
             <span className="text-xs text-gray-500">
               Qty: {product.quantity}

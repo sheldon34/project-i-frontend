@@ -55,13 +55,13 @@ export const CartModal = ({ isOpen, onClose }) => {
                   
                   <div className="flex-1">
                     <h4 className="font-semibold text-gray-900">{item.product?.name}</h4>
-                    <p className="text-gray-600">${item.product?.price}</p>
+                    <p className="text-gray-600">Ksh{item.product?.price}</p>
                     <p className="text-sm text-gray-500">Quantity: {item.quantity}</p>
                   </div>
                   
                   <div className="flex items-center space-x-2">
                     <span className="font-semibold text-lg">
-                      ${(item.product?.price * item.quantity).toFixed(2)}
+                      Ksh{(item.product?.price * item.quantity).toFixed(2)}
                     </span>
                     <button
                       onClick={() => removeFromCart(item.product.id)}
@@ -75,7 +75,7 @@ export const CartModal = ({ isOpen, onClose }) => {
               
               <div className="border-t border-gray-200 pt-4">
                 <div className="flex items-center justify-between text-xl font-bold">
-                  <span>Total: ${getCartTotal().toFixed(2)}</span>
+                  <span>Total: Ksh{getCartTotal().toFixed(2)}</span>
                 </div>
                 
                 <button className="w-full mt-4 bg-blue-600 text-white py-3 rounded-lg hover:bg-blue-700 transition-colors font-semibold">

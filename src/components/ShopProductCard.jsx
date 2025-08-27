@@ -93,7 +93,7 @@ export const ShopProductCard = ({
         <div className="flex items-center justify-between">
           <div className="flex flex-col">
             <span className="text-3xl font-bold text-blue-600">
-              ${typeof product.price === 'number' ? product.price.toLocaleString() : 'N/A'}
+              Ksh{typeof product.price === 'number' ? product.price.toLocaleString() : 'N/A'}
             </span>
             <span className="text-xs text-emerald-600 font-medium">
               {product.quantity} available

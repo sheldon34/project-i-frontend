@@ -32,15 +32,20 @@ export const AuthProvider = ({ children }) => {
   const login = async (credentials) => {
     try {
       const response = await authService.login(credentials);
-      const { token } = response;
-      
+      console.log('Login response data:', response); // Debug: log the actual response data
+      // Try to find the token property
+      const token = response.token || response.accessToken || response.jwt || response.idToken;
+      if (!token) {
+        toast.error('Login failed: No token received from backend.');
+        return { success: false, error: 'No token received from backend' };
+      }
       // Store token and username in cookies
       Cookies.set('token', token, { expires: 7 });
       Cookies.set('username', credentials.username, { expires: 7 });
-      
       setUser({ username: credentials.username });
       setIsAuthenticated(true);
-      
+      // Debug: log the token value after saving
+      console.log('Saved JWT token:', token);
       toast.success('Login successful!');
       return { success: true };
     } catch (error) {

@@ -20,10 +20,10 @@ export const ProductForm = ({
   useEffect(() => {
     if (editProduct) {
       setFormData({
-        name: editProduct.name,
-        description: editProduct.description,
-        price: editProduct.price.toString(),
-        quantity: editProduct.quantity,
+        name: editProduct.name || '',
+        description: editProduct.description || '',
+        price: editProduct && typeof editProduct.price !== 'undefined' ? editProduct.price.toString() : '',
+        quantity: editProduct.quantity || '',
         image: null,
       });
       setImagePreview(editProduct.image || null);

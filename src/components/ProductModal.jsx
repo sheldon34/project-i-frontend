@@ -56,7 +56,7 @@ export const ProductModal = ({
                 <div className="flex items-center justify-between p-4 bg-blue-50 rounded-lg">
                   <span className="text-blue-800 font-medium">Price</span>
                   <span className="text-3xl font-bold text-blue-600">
-                    ${product.price.toLocaleString()}
+                    Ksh{product.price.toLocaleString()}
                   </span>
                 </div>
                 

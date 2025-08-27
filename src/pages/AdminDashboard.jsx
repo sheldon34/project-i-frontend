@@ -116,7 +116,7 @@ export const AdminDashboard = () => {
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-gray-600 text-sm font-medium">Total Value</p>
-                <p className="text-3xl font-bold text-gray-900">${totalValue.toLocaleString()}</p>
+                <p className="text-3xl font-bold text-gray-900">Ksh{totalValue.toLocaleString()}</p>
               </div>
               <div className="p-3 bg-emerald-100 rounded-xl">
                 <TrendingUp className="text-emerald-600" size={24} />
@@ -128,7 +128,7 @@ export const AdminDashboard = () => {
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-gray-600 text-sm font-medium">Average Price</p>
-                <p className="text-3xl font-bold text-gray-900">${averagePrice.toFixed(0)}</p>
+                <p className="text-3xl font-bold text-gray-900">Ksh{averagePrice.toFixed(0)}</p>
               </div>
               <div className="p-3 bg-amber-100 rounded-xl">
                 <BarChart3 className="text-amber-600" size={24} />
