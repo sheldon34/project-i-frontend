@@ -14,7 +14,7 @@ cartApi.interceptors.request.use((config) => {
   if (token) {
     config.headers.Authorization = `Bearer ${token}`;
   }
-  console.log("this is token 1:",config.headers.Authorization);
+  // console.log("this is token 1:",config.headers.Authorization);
   // console.log("this is token 1:",config);
   return config;
 });
@@ -46,9 +46,9 @@ export const cartService = {
     return response.data;
   },
 
-  // Get cart
+  // Get cart (matches backend endpoint)
   getCart: async () => {
-    const response = await cartApi.get();
-    return response.data;
+    const response = await cartApi.get('/get');
+    return response.data; // CartDto
   },
 };

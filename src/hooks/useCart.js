@@ -8,7 +8,7 @@ export const useCart = () => {
   const [loading, setLoading] = useState(false);
   const { isAuthenticated } = useAuth();
 
-  const fetchCart = async () => {
+  const fetchCart = async () => { 
     if (!isAuthenticated) return;
     
     try {
@@ -72,6 +72,8 @@ export const useCart = () => {
     } else {
       setCart(null);
     }
+    console.log(cart)
+    console.log(fetchCart)
   }, [isAuthenticated]);
 
   return {

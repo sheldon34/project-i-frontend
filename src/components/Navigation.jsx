@@ -1,21 +1,30 @@
-import React from 'react';
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { ShoppingBag, Settings, Store, User, LogIn, LogOut, ShoppingCart } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
-import { useCart } from '../hooks/useCart';
+// import { useCart } from '../hooks/useCart';
+import { useCart } from '../context/CartContext';
 import { AuthModal } from './AuthModal';
-import { CartModal } from './CartModal';
 
-export const Navigation = () => {
+export const Navigation = ({ onCartClick }) => {
   const location = useLocation();
   const { isAuthenticated, user, logout } = useAuth();
-  const { getCartItemCount } = useCart();
+   const { cart } = useCart();
+  
+  const getCartItemCount = () => {
+    if (!cart || !cart.cartItems) return 0;
+    return cart.cartItems.reduce((total, item) => total + item.quantity, 0);
+  };
+
+  const getCartTotal = () => {
+    if (!cart || !cart.cartItems) return 0;
+    return cart.cartItems.reduce((total, item) => total + (item.unitPrice * item.quantity), 0);
+  };
+
   const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
-  const [isCartModalOpen, setIsCartModalOpen] = useState(false);
-  
+
   const isActive = (path) => location.pathname === path;
-  
+
   return (
     <>
       <header className="bg-white shadow-sm border-b border-gray-200 sticky top-0 z-40">
@@ -64,9 +73,9 @@ export const Navigation = () => {
               </div>
               {isAuthenticated ? (
                 <>
-                  <button
-                    onClick={() => setIsCartModalOpen(true)}
-                    className="relative p-2 text-gray-600 hover:text-blue-600 transition-colors"
+                  <div
+                    onClick={onCartClick}
+                    className="relative p-2 text-gray-600 hover:text-blue-600 transition-colors cursor-pointer"
                   >
                     <ShoppingCart size={24} />
                     {getCartItemCount() > 0 && (
@@ -74,7 +83,7 @@ export const Navigation = () => {
                         {getCartItemCount()}
                       </span>
                     )}
-                  </button>
+                  </div>
                   <div className="hidden sm:flex items-center space-x-2 px-3 py-1 bg-gray-100 rounded-full">
                     <User size={16} className="text-gray-500" />
                     <span className="text-sm text-gray-600">{user?.username}</span>
@@ -100,17 +109,10 @@ export const Navigation = () => {
           </div>
         </div>
       </header>
-      
       {/* Auth Modal */}
       <AuthModal
         isOpen={isAuthModalOpen}
         onClose={() => setIsAuthModalOpen(false)}
-      />
-      
-      {/* Cart Modal */}
-      <CartModal
-        isOpen={isCartModalOpen}
-        onClose={() => setIsCartModalOpen(false)}
       />
     </>
   );

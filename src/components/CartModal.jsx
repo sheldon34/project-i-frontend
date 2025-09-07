@@ -1,13 +1,22 @@
-import React from 'react';
-import { X, ShoppingCart, Plus, Minus, Trash2 } from 'lucide-react';
-import { useCart } from '../hooks/useCart';
+import React, { useEffect } from 'react';
+import { X, ShoppingCart, Trash2 } from 'lucide-react';
+import { useCart } from '../context/CartContext';
 
 export const CartModal = ({ isOpen, onClose }) => {
-  const { cart, removeFromCart, getCartTotal, loading } = useCart();
+  const { cart, removeFromCart, getCartTotal, fetchCart,loading } = useCart();
 
   if (!isOpen) return null;
 
-  const cartItems = cart?.items || [];
+
+ useEffect(() => {
+    if (isOpen) fetchCart();
+  }, [isOpen, fetchCart]);
+
+  if (!isOpen) return null;
+
+
+  // CORRECTED: Use cartItems
+  const cartItems = cart?.cartItems || [];
 
   return (
     <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center p-4 z-50">
@@ -41,30 +50,23 @@ export const CartModal = ({ isOpen, onClose }) => {
             <div className="space-y-4">
               {cartItems.map((item) => (
                 <div key={item.id} className="flex items-center space-x-4 p-4 border border-gray-200 rounded-lg">
-                  {item.product?.image ? (
-                    <img
-                      src={`data:image/jpeg;base64,${item.product.image}`}
-                      alt={item.product.name}
-                      className="w-16 h-16 object-cover rounded-lg"
-                    />
-                  ) : (
-                    <div className="w-16 h-16 bg-gray-200 rounded-lg flex items-center justify-center">
-                      <ShoppingCart className="text-gray-400" size={24} />
-                    </div>
-                  )}
+                  {/* Placeholder image */}
+                  <div className="w-16 h-16 bg-gray-200 rounded-lg flex items-center justify-center">
+                    <ShoppingCart className="text-gray-400" size={24} />
+                  </div>
                   
                   <div className="flex-1">
-                    <h4 className="font-semibold text-gray-900">{item.product?.name}</h4>
-                    <p className="text-gray-600">Ksh{item.product?.price}</p>
+                    <h4 className="font-semibold text-gray-900">{item.productName}</h4>
+                    <p className="text-gray-600">Ksh{item.unitPrice}</p>
                     <p className="text-sm text-gray-500">Quantity: {item.quantity}</p>
                   </div>
                   
                   <div className="flex items-center space-x-2">
                     <span className="font-semibold text-lg">
-                      Ksh{(item.product?.price * item.quantity).toFixed(2)}
+                      Ksh{(item.unitPrice * item.quantity).toFixed(2)}
                     </span>
                     <button
-                      onClick={() => removeFromCart(item.product.id)}
+                      onClick={() => removeFromCart(item.productId)}
                       className="p-2 text-red-600 hover:bg-red-50 rounded-full transition-colors"
                     >
                       <Trash2 size={16} />
