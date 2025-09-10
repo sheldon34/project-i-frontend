@@ -2,6 +2,7 @@ import React, { createContext, useContext, useState, useEffect } from 'react';
 import Cookies from 'js-cookie';
 import { authService } from '../api/authApi';
 import toast from 'react-hot-toast';
+import { jwtDecode } from "jwt-decode"; // <-- fixed import
 
 const AuthContext = createContext();
 
@@ -20,11 +21,16 @@ export const AuthProvider = ({ children }) => {
 
   useEffect(() => {
     const token = Cookies.get('token');
-    const username = Cookies.get('username');
-    
-    if (token && username) {
-      setUser({ username });
-      setIsAuthenticated(true);
+    if (token) {
+      try {
+        const decoded = jwtDecode(token);
+        const roles = decoded.authorities || decoded.roles || [];
+        setUser({ username: decoded.sub, roles });
+        setIsAuthenticated(true);
+      } catch (error) {
+        console.error('Error decoding token:', error);
+        Cookies.remove('token');
+      }
     }
     setLoading(false);
   }, []);
@@ -32,20 +38,17 @@ export const AuthProvider = ({ children }) => {
   const login = async (credentials) => {
     try {
       const response = await authService.login(credentials);
-      console.log('Login response data:', response); // Debug: log the actual response data
-      // Try to find the token property
       const token = response.token || response.accessToken || response.jwt || response.idToken;
       if (!token) {
         toast.error('Login failed: No token received from backend.');
         return { success: false, error: 'No token received from backend' };
       }
-      // Store token and username in cookies
-      Cookies.set('token', token, { expires: 7 });
-      Cookies.set('username', credentials.username, { expires: 7 });
-      setUser({ username: credentials.username });
+      const decoded = jwtDecode(token); // <-- fixed usage
+      const roles = decoded.authorities || decoded.roles || [];
+      setUser({ username: decoded.sub || credentials.username, roles });
       setIsAuthenticated(true);
-      // Debug: log the token value after saving
-      console.log('Saved JWT token:', token);
+      Cookies.set('token', token, { expires: 7 });
+      Cookies.set('username', decoded.sub || credentials.username, { expires: 7 });
       toast.success('Login successful!');
       return { success: true };
     } catch (error) {
@@ -81,6 +84,7 @@ export const AuthProvider = ({ children }) => {
     login,
     register,
     logout,
+    roles: user?.roles || [], // <-- add this
   };
 
   return (

@@ -8,8 +8,8 @@ import { AuthModal } from './AuthModal';
 
 export const Navigation = ({ onCartClick }) => {
   const location = useLocation();
-  const { isAuthenticated, user, logout } = useAuth();
-   const { cart } = useCart();
+  const { authState, isAuthenticated, user, logout } = useAuth();
+  const { cart } = useCart();
   
   const getCartItemCount = () => {
     if (!cart || !cart.cartItems) return 0;
@@ -24,6 +24,9 @@ export const Navigation = ({ onCartClick }) => {
   const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
 
   const isActive = (path) => location.pathname === path;
+
+  const { roles } = useAuth();
+  const isAdmin = roles.includes('ADMIN');
 
   return (
     <>
@@ -51,17 +54,19 @@ export const Navigation = ({ onCartClick }) => {
                   <span>Shop</span>
                 </Link>
                 
-                <Link
-                  to="/admin"
-                  className={`px-4 py-2 rounded-lg font-medium transition-all duration-200 flex items-center space-x-2 ${
-                    isActive('/admin') 
-                      ? 'bg-emerald-100 text-emerald-700 shadow-sm' 
-                      : 'text-gray-600 hover:text-gray-900 hover:bg-gray-100'
-                  }`}
-                >
-                  <Settings size={18} />
-                  <span>Admin Panel</span>
-                </Link>
+                {isAdmin && (
+                  <Link
+                    to="/admin"
+                    className={`px-4 py-2 rounded-lg font-medium transition-all duration-200 flex items-center space-x-2 ${
+                      isActive('/admin') 
+                        ? 'bg-emerald-100 text-emerald-700 shadow-sm' 
+                        : 'text-gray-600 hover:text-gray-900 hover:bg-gray-100'
+                    }`}
+                  >
+                    <Settings size={18} />
+                    <span>Admin Panel</span>
+                  </Link>
+                )}
               </nav>
             </div>
             <div className="flex items-center space-x-4">

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Routes, Route } from 'react-router-dom';
+import { Routes, Route, Navigate } from 'react-router-dom';
 import { Toaster } from 'react-hot-toast';
 import { AuthProvider } from './context/AuthContext';
 import { CartProvider ,useCart} from './context/CartContext';
@@ -98,11 +98,24 @@ function AppContent() {
         )}
         <Routes>
           <Route path="/" element={<ShopPage />} />
-          <Route path="/admin" element={<AdminDashboard />} />
+          <Route path="/admin" element={
+            <RequireAdmin>
+              <AdminDashboard />
+            </RequireAdmin>
+          } />
         </Routes>
       </div>
     </CartProvider>
   );
+}
+
+function RequireAdmin({ children }) {
+  const { isAuthenticated, roles } = useAuth();
+  const isAdmin = roles.includes('ADMIN');
+  if (!isAuthenticated || !isAdmin) {
+    return <Navigate to="/" replace />;
+  }
+  return children;
 }
 
 function App() {
