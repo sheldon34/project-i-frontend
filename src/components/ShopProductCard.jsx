@@ -30,9 +30,9 @@ export const ShopProductCard = ({
   return (
     <div className="group bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden hover:shadow-2xl transition-all duration-500 hover:-translate-y-2">
       <div className="relative overflow-hidden bg-gray-50">
-        {product.image ? (
+        {product.imageUrl ? (
           <img
-            src={product.image}
+            src={product.imageUrl}
             alt={product.name}
             className="w-full h-64 object-cover group-hover:scale-110 transition-transform duration-700"
           />
@@ -93,7 +93,7 @@ export const ShopProductCard = ({
         <div className="flex items-center justify-between">
           <div className="flex flex-col">
             <span className="text-3xl font-bold text-blue-600">
-              Ksh{typeof product.price === 'number' ? product.price.toLocaleString() : 'N/A'}
+              Ksh {typeof product.price === 'number' ? product.price.toLocaleString() : 'N/A'}
             </span>
             <span className="text-xs text-emerald-600 font-medium">
               {product.quantity} available

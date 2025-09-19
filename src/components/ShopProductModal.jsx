@@ -48,9 +48,9 @@ export const ShopProductModal = ({
         <div className="p-6">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
             <div className="space-y-4">
-              {product.image ? (
+              {product.imageUrl ? (
                 <img
-                  src={product.image}
+                  src={product.imageUrl}
                   alt={product.name}
                   className="w-full h-96 object-cover rounded-2xl shadow-lg"
                 />
@@ -116,7 +116,7 @@ export const ShopProductModal = ({
                   <div>
                     <span className="text-blue-800 font-medium text-lg">Price</span>
                     <div className="text-4xl font-bold text-blue-600">
-                      ${product.price.toLocaleString()}
+                     Ksh {product.price.toLocaleString()}
                     </div>
                   </div>
                   <div className="text-right">

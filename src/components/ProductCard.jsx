@@ -10,9 +10,9 @@ export const ProductCard = ({
   return (
     <div className="group bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
       <div className="relative overflow-hidden bg-gray-50">
-        {product.image ? (
+        {product.imageUrl ? (
           <img
-            src={product.image}
+            src={product.imageUrl}
             alt={product.name}
             className="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300"
           />

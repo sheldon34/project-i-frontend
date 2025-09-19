@@ -24,7 +24,7 @@ export const productApi = {
       const response = await api.get('/getAll');
       return response.data.map((product) => ({
         ...product,
-        image: product.image ? `data:image/jpeg;base64,${product.image}` : null
+        imageUrl: product.imageUrl || null
       }));
     } catch (error) {
       if (axios.isAxiosError(error) && error.response?.status === 204) {
@@ -40,7 +40,7 @@ export const productApi = {
     const product = response.data;
     return {
       ...product,
-      image: product.image ? `data:image/jpeg;base64,${product.image}` : null
+      imageUrl: product.imageUrl || null
     };
   },
 
@@ -50,29 +50,25 @@ export const productApi = {
     formData.append('name', productData.name);
     formData.append('description', productData.description);
     formData.append('price', productData.price.toString());
-    formData.append('Quantity', productData.quantity);
-    
+    formData.append('quantity', productData.quantity);
     if (productData.image) {
       formData.append('image', productData.image);
     }
-
     const response = await api.post('/upload', formData, {
       headers: {
         'Content-Type': 'multipart/form-data',
       },
     });
-
     const product = response.data;
     return {
       ...product,
-      image: product.image ? `data:image/jpeg;base64,${product.image}` : null
+      imageUrl: product.imageUrl || null
     };
   },
 
   // Update product
   updateProduct: async (id, productData) => {
     const formData = new FormData();
-    
     if (productData.name !== undefined) {
       formData.append('name', productData.name);
     }
@@ -83,22 +79,20 @@ export const productApi = {
       formData.append('price', productData.price.toString());
     }
     if (productData.quantity !== undefined) {
-      formData.append('Quantity', productData.quantity);
+      formData.append('quantity', productData.quantity);
     }
     if (productData.image !== undefined && productData.image !== null) {
       formData.append('image', productData.image);
     }
-
     const response = await api.put(`/update/${id}`, formData, {
       headers: {
         'Content-Type': 'multipart/form-data',
       },
     });
-
     const product = response.data;
     return {
       ...product,
-      image: product.image ? `data:image/jpeg;base64,${product.image}` : null
+      imageUrl: product.imageUrl || null
     };
   },
 

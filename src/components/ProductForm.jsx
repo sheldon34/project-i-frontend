@@ -26,7 +26,7 @@ export const ProductForm = ({
         quantity: editProduct.quantity || '',
         image: null,
       });
-      setImagePreview(editProduct.image || null);
+      setImagePreview(editProduct.imageUrl || null);
     } else {
       setFormData({
         name: '',
